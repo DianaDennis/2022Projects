@@ -1,4 +1,4 @@
-package test.java.com.qa.tests;
+package com.qa.tests;
 
 import org.testng.Assert;
 
