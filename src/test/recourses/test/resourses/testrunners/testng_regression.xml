@@ -6,11 +6,11 @@
 
 	<listeners>
 
-        <listener class-name="com.qa.listeners.AnnotationTransformer" />
+        <listener class-name="main.java.com.qa.listeners.AnnotationTransformer" />
 
-		<listener class-name="com.qa.listeners.ExtentReportListener" />
+		<listener class-name="main.java.com.qa.listeners.ExtentReportListener" />
 	
-        <listener class-name="com.qa.listeners.TestAllureListener" />
+        <listener class-name="main.java.com.qa.listeners.TestAllureListener" />
    
      </listeners>
 
