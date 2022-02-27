@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelUtil {//src/test/resourses/testdata/DemoCartTestData.xlsx
 
-	private static String TEST_DATA_SHEET = ".\\src\\test\\recourses\\test\\resourses\\testdata\\DemoCartTestData.xlsx";
+	private static String TEST_DATA_SHEET = ".\\src\\test\\resourses\\test\\resourses\\testdata\\DemoCartTestData.xlsx";
 	private static Workbook book;
 	private static Sheet sheet;
 
