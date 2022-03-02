@@ -36,7 +36,7 @@ pipeline
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/DianaDennis/2022Projects.git'
-                    sh "mvn clean install"
+                    bat "mvn clean install"
                     
                 }
             }
