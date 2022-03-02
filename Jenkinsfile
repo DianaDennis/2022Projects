@@ -3,7 +3,7 @@ pipeline
     agent any
     
     tools{
-    	maven 'M3'
+    	maven 'maven'
         }
 
     stages 
@@ -35,7 +35,7 @@ pipeline
         stage('Regression Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/DianaDennis/2022Projects.git'
+                    git 'https://github.com/naveenanimation20/Nov2021POMSeries.git'
                     sh "mvn clean install"
                     
                 }
