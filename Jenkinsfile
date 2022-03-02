@@ -35,7 +35,7 @@ pipeline
         stage('Regression Automation Test') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    git 'https://github.com/DianaDennis/2022Projects.git'
+                    git 'https://github.com/DianaDennis/2022Projects'
                     sh "mvn clean install"
                     
                 }
