@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.imageio.stream.FileImageInputStream;
+
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -14,6 +17,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -40,16 +44,37 @@ public class DriverFactory {
 		optionsManager = new OptionsManager(prop);
 		
 		if (browserName.equalsIgnoreCase("chrome")) {
-			WebDriverManager.chromedriver().setup();
+			
 			//driver = new ChromeDriver(optionsManager.getChromeOptions());
-			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));//it creats a copy of a Driver so will never get null
+			
+			//for remote option,if it is set in config.file false it will execute on local means it will go to second part
+			if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+				//remote execution on grid server:
+				init_remoteDriver("chrome");
+			}
+			else {
+				//local
+				WebDriverManager.chromedriver().setup();
+				tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));//it creats a copy of a Driver so will never get null
+				//this is for local execution!
+					
+			}
+
 		}
 		
 		else if (browserName.equalsIgnoreCase("firefox")) {
+			if(Boolean.parseBoolean(prop.getProperty("remote"))) {
+				//remote execution on grid server:
+				init_remoteDriver("firefox");
+			}
+			else {
+				
 			WebDriverManager.firefoxdriver().setup();
 			//driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
 			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
-		} 
+		}
+		}
+		//safari runs only localy
 		else if (browserName.equalsIgnoreCase("safari")) {
 			//driver = new SafariDriver();
 			tlDriver.set(new SafariDriver());
@@ -66,6 +91,29 @@ public class DriverFactory {
 		getDriver().manage().window().maximize();
 		getDriver().get(prop.getProperty("url").trim());
 		return getDriver();
+	}
+	/**
+	 * run test cases on remote machine
+	 * @param browser
+	 */
+	//Method for remote browser
+	private void init_remoteDriver(String browser) {
+		System.out.println("Running test cases on remote server :" + browser);
+		
+		if(browser.equals("chrome")) {
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")),optionsManager.getChromeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+		else if(browser.equals("firefox")) {
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")),optionsManager.getFirefoxOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	/**
 	 * this will return the thread local copy of the driver
